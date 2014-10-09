@@ -29,6 +29,8 @@ namespace tree {
 
 #include <sstream>
 #include <vector>
+#include <string>
+#include <cassert>
 using std::vector;
 
 #define GET_TEXT(node) (node)->getText((node))
@@ -122,6 +124,44 @@ static inline antlr::tree::Tree *get_child_(antlr::tree::Tree *n, int i)
 						+std::string(CCP(TO_STRING_TREE(node))))
 
 namespace antlr3cxx {
+
+	using std::string; 
+	inline antlr::tree::Tree *clone_ast(antlr::tree::Tree *t)
+	{
+		#define CLONE(t)  GET_FACTORY(t)->newFromTree(GET_FACTORY(t), (pANTLR3_COMMON_TREE)t->super)
+		antlr::tree::Tree *cloned_head = CLONE(t);
+		for (unsigned i = 0; i < GET_CHILD_COUNT(t); ++i)
+		{
+			cloned_head->addChild(cloned_head, clone_ast(GET_CHILD(t, i)));
+		}
+		return cloned_head;
+		#undef CLONE
+	}
+
+	inline antlr::tree::Tree *build_ast(
+		antlr::Arboretum *treeFactory,
+		int tokenType, const string& text, 
+		const std::vector<antlr::tree::Tree *>& children
+	)
+	{
+		auto p_token = antlr3CommonTokenNew(tokenType);
+		auto p_node = treeFactory->newFromToken(treeFactory, p_token);
+		assert(p_node->strFactory);
+		p_token->setText(p_token, p_node->strFactory->newPtr8(
+				p_node->strFactory,
+				(pANTLR3_UINT8) text.c_str(),
+				text.length()
+			)
+		);
+		
+		// add the children
+		for (auto i_child = children.begin(); i_child != children.end(); ++i_child)
+		{
+			p_node->addChild(p_node, *i_child);
+		}
+		
+		return p_node;
+	}
 
 	class TreewalkError
 	{
