@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+pkgincludedir=${includedir}/@PACKAGE@
+pkglibdir=@pkglibdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+
+Name: libantlr3cxx
+Description:  C++ helpers for using ANTLR3 parsers and trees 
+Version: 0.1
+Cflags: -I${includedir}
