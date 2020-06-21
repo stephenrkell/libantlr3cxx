@@ -91,8 +91,8 @@ static inline antlr::tree::Tree *get_child_(antlr::tree::Tree *n, int i)
 /* Before binding a sequence of children, do INIT. 
  * Don't do INIT more than once in the same scope -- start another scope instead. */
 #define INIT int next_child_to_bind __attribute__(( unused )) = 0 
-#define BIND2(node, name) antlr::tree::Tree *(name) __attribute__((unused)) = reinterpret_cast<antlr::tree::Tree*>(GET_CHILD(node, next_child_to_bind++));
-#define BIND3(node, name, token) antlr::tree::Tree *(name) __attribute__((unused)) = reinterpret_cast<antlr::tree::Tree*>(GET_CHILD(node, next_child_to_bind++)); \
+#define BIND2(node, name) antlr::tree::Tree *name __attribute__((unused)) = reinterpret_cast<antlr::tree::Tree*>(GET_CHILD(node, next_child_to_bind++));
+#define BIND3(node, name, token) antlr::tree::Tree *name __attribute__((unused)) = reinterpret_cast<antlr::tree::Tree*>(GET_CHILD(node, next_child_to_bind++)); \
 	if ((name) == 0) throw antlr3cxx::SemanticError( \
 		(name), \
 		"no child node!"); \
