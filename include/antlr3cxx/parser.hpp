@@ -84,7 +84,7 @@ static inline antlr::tree::Tree *get_child_(antlr::tree::Tree *n, int i)
 
 #define CHECK_TOKEN(node, token, tokenname) \
 	if (!(GET_TYPE(node) == token)) throw antlr3cxx::SemanticError((node), \
-	(dynamic_cast<std::ostringstream&>((std::ostringstream() << "expected a token of class " << TOKEN(token) << "/" << tokenname \
+	(dynamic_cast<std::ostringstream&&>((std::ostringstream() << "expected a token of class " << TOKEN(token) << "/" << tokenname \
 	" (" __FILE__ ":" << __LINE__ << "); found token " << CCP(GET_TEXT(node)) \
 	<< " class id " << GET_TYPE(node))).str() )) 
 
